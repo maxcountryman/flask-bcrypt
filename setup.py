@@ -14,7 +14,7 @@ from setuptools import setup
 setup(
     name='Flask-Bcrypt',
     version='0.1',
-    url='http://example.com/flask-bcrypt/',
+    url='https://github.com/maxcountryman/flask-bcrypt',
     license='BSD',
     author='Max Countryman',
     author_email='maxc@me.com',
