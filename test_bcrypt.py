@@ -16,6 +16,10 @@ class BasicTestCase(unittest.TestCase):
         pw_hash = generate_password_hash(42)
         self.assertTrue(isinstance(pw_hash[0], str))
         self.assertTrue(isinstance(pw_hash[1], str))
+    
+    def test_custom_rounds(self):
+        pw_hash = generate_password_hash('secret', 10) # high values will be slow!
+        self.assertTrue(isinstance(pw_hash, tuple))
         
     def test_check_hash(self):
         # check a correct password
