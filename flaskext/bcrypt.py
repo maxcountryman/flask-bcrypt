@@ -2,8 +2,10 @@ from __future__ import absolute_import
 import bcrypt
 
 
-def generate_password_hash(password):
-    '''Generates a password hash using `bcrypt`.
+def generate_password_hash(password, rounds=12):
+    '''Generates a password hash using `bcrypt`. Specifying `rounds` sets the
+    log_rounds parameter of `bcrypt.gensalt()` which determines the complexity
+    of the salt.
     
     Returns a tuple containing the hashed password and salt.
     '''
@@ -12,11 +14,11 @@ def generate_password_hash(password):
         raise ValueError('Password must be non-empty.')
     
     password = str(password)
-    salt = bcrypt.gensalt()
+    salt = bcrypt.gensalt(rounds)
     h = bcrypt.hashpw(password, salt)
     
     return (h, salt)
-
+ 
 
 def check_password_hash(pw_hash, password):
     '''Checks a password hash and salt against a password. The password hash,
