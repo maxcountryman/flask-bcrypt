@@ -5,7 +5,8 @@ import bcrypt
 def generate_password_hash(password, rounds=12):
     '''Generates a password hash using `bcrypt`. Specifying `rounds` sets the
     log_rounds parameter of `bcrypt.gensalt()` which determines the complexity
-    of the salt.
+    of the salt. 12 is the default value, 31 is the highest accepted value. 
+    Ints exceeding 31 will become the default value of 12.
     
     Returns a tuple containing the hashed password and salt.
     '''
@@ -14,6 +15,8 @@ def generate_password_hash(password, rounds=12):
         raise ValueError('Password must be non-empty.')
     
     password = str(password)
+    rounds = int(rounds)
+    
     salt = bcrypt.gensalt(rounds)
     h = bcrypt.hashpw(password, salt)
     

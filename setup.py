@@ -8,8 +8,8 @@ then check passwords against a hash `check_password_hash`.
 
 This extension requires py-bcrypt.
 '''
-from setuptools import setup
 
+from setuptools import setup
 
 setup(
     name='Flask-Bcrypt',
@@ -36,6 +36,7 @@ setup(
         'Programming Language :: Python',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Software Development :: Libraries :: Python Modules'
-    ]
+    ],
+    test_suite='test_bcrypt'
 )
 
