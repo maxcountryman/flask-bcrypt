@@ -19,10 +19,6 @@ class BasicTestCase(unittest.TestCase):
         self.assertTrue(isinstance(pw_hash[0], str))
         self.assertTrue(isinstance(pw_hash[1], str))
         
-    def test_not_integer(self):
-        with self.assertRaises(TypeError):
-            pw_hash = generate_password_hash('secret', 'ten') # rounds param should be int!
-        
     def test_custom_rounds(self):
         pw_hash = generate_password_hash('secret', 10) # high values will be slow!
         self.assertTrue(isinstance(pw_hash, tuple))
