@@ -19,7 +19,7 @@ def generate_password_hash(password, rounds=12):
     salt = bcrypt.gensalt(rounds)
     h = bcrypt.hashpw(password, salt)
     
-    return (h, salt)
+    return h
  
 
 def check_password_hash(pw_hash, password):
@@ -30,10 +30,5 @@ def check_password_hash(pw_hash, password):
     Returns `True` if the password matched, `False` otherwise.
     '''
     
-    if len(pw_hash) != 2:
-        raise ValueError('pw_hash must be two elements exactly.')
-    
-    hash_value, salt = pw_hash[0], pw_hash[1]
-    
-    return bcrypt.hashpw(password, salt) == hash_value
+    return bcrypt.hashpw(password, pw_hash) == pw_hash
 
