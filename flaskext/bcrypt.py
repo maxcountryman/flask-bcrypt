@@ -14,8 +14,10 @@ def generate_password_hash(password, rounds=12):
     if not password:
         raise ValueError('Password must be non-empty.')
     
+    if not isinstance(rounds, int):
+        raise TypeError('Number of rounds must be int.')
+    
     password = str(password)
-    rounds = int(rounds)
     
     salt = bcrypt.gensalt(rounds)
     h = bcrypt.hashpw(password, salt)
