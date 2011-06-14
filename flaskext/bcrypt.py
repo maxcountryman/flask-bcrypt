@@ -2,13 +2,12 @@ from __future__ import absolute_import
 import bcrypt
 
 
-def generate_password_hash(password, rounds=12):
-    '''Generates a password hash using `bcrypt`. Specifying `rounds` sets the
-    log_rounds parameter of `bcrypt.gensalt()` which determines the complexity
-    of the salt. 12 is the default value, 31 is the highest accepted value. 
-    Ints exceeding 31 will become the default value of 12.
+def generate_password_hash(password, log_rounds=12):
+    '''Generates a password hash using `bcrypt`. Specifying `log_rounds` sets 
+    the log_rounds parameter of `bcrypt.gensalt()` which determines the 
+    complexity of the salt. 12 is the default value.
     
-    Returns a tuple containing the hashed password and salt.
+    Returns the hashed password.
     '''
     
     if not password:
@@ -16,24 +15,16 @@ def generate_password_hash(password, rounds=12):
     
     password = str(password)
     
-    salt = bcrypt.gensalt(rounds)
-    h = bcrypt.hashpw(password, salt)
+    pw_hash = bcrypt.hashpw(password, bcrypt.gensalt(log_rounds))
     
-    return (h, salt)
- 
+    return pw_hash
+
 
 def check_password_hash(pw_hash, password):
-    '''Checks a password hash and salt against a password. The password hash,
-    `pw_hash` should be a tuple, containing the hash value `pw_hash[0]` and the
-    salt `pw_hash[1]`.
+    '''Checks a hashed password against a password.
     
     Returns `True` if the password matched, `False` otherwise.
     '''
     
-    if len(pw_hash) != 2:
-        raise ValueError('pw_hash must be two elements exactly.')
-    
-    hash_value, salt = pw_hash[0], pw_hash[1]
-    
-    return bcrypt.hashpw(password, salt) == hash_value
+    return bcrypt.hashpw(password, pw_hash) == pw_hash
 

@@ -11,17 +11,16 @@ class BasicTestCase(unittest.TestCase):
         password = 'secret'
         self.pw_hash = generate_password_hash(password)
         
-    def test_is_tuple(self):
-        self.assertTrue(isinstance(self.pw_hash, tuple))
+    def test_is_string(self):
+        self.assertTrue(isinstance(self.pw_hash, str))
         
     def test_not_string(self):
         pw_hash = generate_password_hash(42)
-        self.assertTrue(isinstance(pw_hash[0], str))
-        self.assertTrue(isinstance(pw_hash[1], str))
+        self.assertTrue(isinstance(pw_hash, str))
         
     def test_custom_rounds(self):
         pw_hash = generate_password_hash('secret', 10) # high values will be slow!
-        self.assertTrue(isinstance(pw_hash, tuple))
+        self.assertTrue(isinstance(pw_hash, str))
         
     def test_check_hash(self):
         # check a correct password
