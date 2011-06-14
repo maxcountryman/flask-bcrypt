@@ -5,8 +5,7 @@ are provided to override the werkzeug.security hashing functions.
 
 To use, simply do the following:
 
-    from flaskext.bcrypt import bcrypt_init, generate_password_hash, 
-    check_password_hash
+    from flaskext.bcrypt import bcrypt_init, generate_password_hash, check_password_hash
     
     bcrypt_init(app)
     
