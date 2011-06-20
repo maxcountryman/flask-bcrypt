@@ -5,7 +5,6 @@ _log_rounds = 12
 
 def bcrypt_init(app):
     rounds = app.config.get('BCRYPT_LOG_ROUNDS', None)
-    print(rounds)
     if rounds:
         _log_rounds = rounds
 
