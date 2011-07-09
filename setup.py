@@ -13,7 +13,7 @@ from setuptools import setup
 
 setup(
     name='Flask-Bcrypt',
-    version='0.2',
+    version='0.3',
     url='https://github.com/maxcountryman/flask-bcrypt',
     license='BSD',
     author='Max Countryman',

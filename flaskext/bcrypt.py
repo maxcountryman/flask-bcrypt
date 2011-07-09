@@ -8,7 +8,7 @@ def bcrypt_init(app):
     if rounds:
         _log_rounds = rounds
 
-def generate_password_hash(password):
+def generate_password_hash(password, rounds=_log_rounds):
     '''Generates a password hash using `bcrypt`. Specifying `log_rounds` sets 
     the log_rounds parameter of `bcrypt.gensalt()` which determines the 
     complexity of the salt. 12 is the default value.
@@ -21,7 +21,7 @@ def generate_password_hash(password):
     
     password = str(password)
     
-    pw_hash = bcrypt.hashpw(password, bcrypt.gensalt(_log_rounds))
+    pw_hash = bcrypt.hashpw(password, bcrypt.gensalt(rounds))
     
     return pw_hash
 
