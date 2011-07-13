@@ -1,14 +1,14 @@
 from __future__ import absolute_import
 import bcrypt
 
-_log_rounds = 12
+_log_rounds = [12]
 
 def bcrypt_init(app):
     rounds = app.config.get('BCRYPT_LOG_ROUNDS', None)
     if rounds:
-        _log_rounds = rounds
+        _log_rounds[0] = rounds
 
-def generate_password_hash(password):
+def generate_password_hash(password, rounds=_log_rounds[0]):
     '''Generates a password hash using `bcrypt`. Specifying `log_rounds` sets 
     the log_rounds parameter of `bcrypt.gensalt()` which determines the 
     complexity of the salt. 12 is the default value.
@@ -21,7 +21,7 @@ def generate_password_hash(password):
     
     password = str(password)
     
-    pw_hash = bcrypt.hashpw(password, bcrypt.gensalt(_log_rounds))
+    pw_hash = bcrypt.hashpw(password, bcrypt.gensalt(rounds))
     
     return pw_hash
 
