@@ -25,11 +25,25 @@ def generate_password_hash(password, rounds=_log_rounds[0]):
     
     return pw_hash
 
+def constant_time_compare(val1, val2):
+    '''Returns True if the two strings are equal, False otherwise.
+
+    The time taken is independent of the number of characters that match.
+    '''
+
+    if len(val1) != len(val2):
+        return False
+
+    result = 0
+    for x, y in zip(val1, val2):
+        result |= ord(x) ^ ord(y)
+
+    return result == 0
+
 def check_password_hash(pw_hash, password):
     '''Checks a hashed password against a password.
     
     Returns `True` if the password matched, `False` otherwise.
     '''
     
-    return bcrypt.hashpw(password, pw_hash) == pw_hash
-
+    return constant_time_compare(bcrypt.hashpw(password, pw_hash), pw_hash)
