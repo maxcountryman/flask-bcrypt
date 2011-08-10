@@ -8,7 +8,7 @@ def bcrypt_init(app):
     if rounds:
         _log_rounds[0] = rounds
 
-def generate_password_hash(password, rounds=_log_rounds[0]):
+def generate_password_hash(password, rounds=None):
     '''Generates a password hash using `bcrypt`. Specifying `log_rounds` sets 
     the log_rounds parameter of `bcrypt.gensalt()` which determines the 
     complexity of the salt. 12 is the default value.
@@ -16,6 +16,9 @@ def generate_password_hash(password, rounds=_log_rounds[0]):
     Returns the hashed password.
     '''
     
+    if rounds is None:
+        rounds = _log_rounds[0]    
+
     if not password:
         raise ValueError('Password must be non-empty.')
     
