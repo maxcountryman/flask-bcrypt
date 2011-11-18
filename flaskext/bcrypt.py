@@ -22,6 +22,8 @@ def generate_password_hash(password, rounds=None):
     if not password:
         raise ValueError('Password must be non-empty.')
     
+    if isinstance(password, unicode):
+        password = password.encode('u8')
     password = str(password)
     
     pw_hash = bcrypt.hashpw(password, bcrypt.gensalt(rounds))
@@ -48,5 +50,9 @@ def check_password_hash(pw_hash, password):
     
     Returns `True` if the password matched, `False` otherwise.
     '''
+
+    if isinstance(password, unicode):
+        password = password.encode('u8')
+    password = str(password)
     
     return constant_time_compare(bcrypt.hashpw(password, pw_hash), pw_hash)
