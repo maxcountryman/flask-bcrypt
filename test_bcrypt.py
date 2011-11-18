@@ -31,6 +31,23 @@ class BasicTestCase(unittest.TestCase):
         # check a wrong password
         b = check_password_hash(self.pw_hash, 'test')
         self.assertFalse(b)
+
+    def test_check_hash_unicode(self):
+        password=u'\u2603'
+        x = generate_password_hash(password)
+        # check a correct password
+        a = check_password_hash(x, password)
+        self.assertTrue(a)
+        # check a wrong password
+        b = check_password_hash(x, 'test')
+        self.assertFalse(b)
+
+    def test_check_hash_unicode_is_utf8(self):
+        password=u'\u2603'
+        x = generate_password_hash(password)
+        # check a correct password
+        a = check_password_hash(x, '\xe2\x98\x83')
+        self.assertTrue(a)
     
     def test_rounds_set(self):
         self.assertTrue(sys.modules['flaskext.bcrypt']._log_rounds[0] == 6)
