@@ -1,24 +1,20 @@
 '''
-Flask-Bcrypt
-------------
-
-Flask-Bcrypt provides bcrypt support for use with hashing passwords. Two 
-functions can be used together to hash passwords `generate_password_hash` and 
-then check passwords against a hash `check_password_hash`.
-
-This extension requires py-bcrypt.
+    Flask-Bcrypt
+    ------------
+    
+    Bcrypt hashing for your Flask.
 '''
 
 from setuptools import setup
 
 setup(
     name='Flask-Bcrypt',
-    version='0.3.2',
+    version='0.5',
     url='https://github.com/maxcountryman/flask-bcrypt',
     license='BSD',
     author='Max Countryman',
     author_email='maxc@me.com',
-    description='Bcrypt support for hashing passwords',
+    description='Brcrypt hashing for Flask.',
     long_description=__doc__,
     packages=['flaskext'],
     namespace_packages=['flaskext'],

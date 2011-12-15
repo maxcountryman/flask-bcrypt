@@ -1,0 +1,217 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Flask-Bcrypt &mdash; Flask-Bcrypt v0.5 documentation</title>
+    <link rel="stylesheet" href="_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Flask-Bcrypt v0.5 documentation" href="#" /> 
+  </head>
+  <body>
+  
+  
+  <div class=indexwrapper>
+  
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-flaskext.bcrypt">
+<span id="flask-bcrypt"></span><h1>Flask-Bcrypt<a class="headerlink" href="#module-flaskext.bcrypt" title="Permalink to this headline">¶</a></h1>
+<p>Flask-Bcrypt is a Flask extension that provides bcrypt hashing utilities for
+your application.</p>
+<p>Due to the recent increased prevelance of powerful hardware, such as modern
+GPUs, hashes have become increasingly easy to crack. A proactive solution to
+this is to use a hash that was designed to be &#8220;de-optimized&#8221;. Bcrypt is such
+a hashing facility; unlike hashing algorithms such as MD5 and SHA1, which are
+optimized for speed, bcrypt is intentionally structured to be slow.</p>
+<p>For sensitive data that must be protected, such as passwords, bcrypt is an
+advisable choice.</p>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Install the extension with one of the following commands:</p>
+<blockquote>
+<div>$ easy_install flask-bcrypt</div></blockquote>
+<p>or alternatively if you have pip installed:</p>
+<blockquote>
+<div>$ pip install flask-bcrypt</div></blockquote>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>To use the extension simply import the class wrapper and pass the Flask app
+object back to here. Do so like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">flask</span>
+<span class="kn">from</span> <span class="nn">flaskext.bcrypt</span> <span class="kn">import</span> <span class="n">Bcrypt</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">bcrypt</span> <span class="o">=</span> <span class="n">Bcrypt</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Two primary hashing methods are now exposed by way of the bcrypt object. Use
+them like so:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">pw_hash</span> <span class="o">=</span> <span class="n">bcrypt</span><span class="o">.</span><span class="n">generate_password_hash</span><span class="p">(</span><span class="s">&#39;hunter2&#39;</span><span class="p">)</span>
+<span class="n">bcrypt</span><span class="o">.</span><span class="n">check_password_hash</span><span class="p">(</span><span class="n">pw_hash</span><span class="p">,</span> <span class="s">&#39;hunter2&#39;</span><span class="p">)</span> <span class="c"># returns True</span>
+</pre></div>
+</div>
+<div class="section" id="api">
+<h3>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="flaskext.bcrypt.Bcrypt">
+<em class="property">class </em><tt class="descclassname">flaskext.bcrypt.</tt><tt class="descname">Bcrypt</tt><big>(</big><em>app=None</em><big>)</big><a class="headerlink" href="#flaskext.bcrypt.Bcrypt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bcrypt class container for password hashing and checking logic using 
+bcrypt. This class may be used to intialize your Flask app object. The 
+purpose is to provide a simple interface for overriding Werkzeug&#8217;s 
+built-in password hashing utilities.</p>
+<p>Although such methods are not actually overriden, the API is intentionally 
+made similar so that existing applications which make use of the previous 
+hashing functions might be easily adapted to the stronger facility of 
+bcrypt.</p>
+<p>To get started you will wrap you application&#8217;s app object something like 
+this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">bcrypt</span> <span class="o">=</span> <span class="n">Bcrypt</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now the two primary utility methods are exposed via this object, <cite>bcrypt</cite>.
+So in the context of the application, important data, such as passwords, 
+could be hashed using this syntax:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">password</span> <span class="o">=</span> <span class="s">&#39;hunter2&#39;</span>
+<span class="n">pw_hash</span> <span class="o">=</span> <span class="n">bcrypt</span><span class="o">.</span><span class="n">generate_password_hash</span><span class="p">(</span><span class="n">password</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Once hashed, the value is irreversible. However in the case of validating 
+logins a simple hashing of candidate password and subsequent comparison. 
+Importantly a comparison should be done in constant time. This helps 
+prevent timing attacks. A simple utility method is provided for this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">candidate</span> <span class="o">=</span> <span class="s">&#39;secret&#39;</span>
+<span class="n">bcrypt</span><span class="o">.</span><span class="n">check_password_hash</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">pw_hash</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If both the candidate and the existing password hash are a match 
+<cite>check_password_hash</cite> returns True. Otherwise, it returns False.</p>
+<div class="admonition-namespacing-issues admonition">
+<p class="first admonition-title">Namespacing Issues </p>
+<p>It&#8217;s worth noting that if you use the format, <cite>bcrypt = Bcrypt(app)</cite> 
+you are effectively overriding the bcrypt module. Though it&#8217;s unlikely 
+you would need to access the module outside of the scope of the 
+extension be aware that it&#8217;s overriden.</p>
+<p class="last">Alternatively consider using a different name, such as <cite>flask_bycrypt 
+= Bcrypt(app)</cite> to prevent naming collisions.</p>
+</div>
+<p>Additionally a configuration value for <cite>BCRYPT_LOG_ROUNDS</cite> may be set in 
+the configuration of the Flask app. If none is provided this will 
+internally be assigned to 12. (This value is used in determining the 
+complexity of the encryption, see bcrypt for more details.)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Params app:</th><td class="field-body">The Flask application object. Defaults to None.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="flaskext.bcrypt.Bcrypt.check_password_hash">
+<tt class="descname">check_password_hash</tt><big>(</big><em>pw_hash</em>, <em>password</em><big>)</big><a class="headerlink" href="#flaskext.bcrypt.Bcrypt.check_password_hash" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests a password hash against a candidate password. The candidate 
+password is first hashed and then subsequently compared in constant 
+time to the existing hash. This will either return <cite>True</cite> or <cite>False</cite>.</p>
+<p>Example usage of <a class="reference internal" href="#flaskext.bcrypt.Bcrypt.check_password_hash" title="flaskext.bcrypt.Bcrypt.check_password_hash"><tt class="xref py py-class docutils literal"><span class="pre">check_password_hash</span></tt></a> would look something 
+like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">pw_hash</span> <span class="o">=</span> <span class="n">bcrypt</span><span class="o">.</span><span class="n">generate_password_hash</span><span class="p">(</span><span class="s">&#39;secret&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">bcrypt</span><span class="o">.</span><span class="n">check_password_hash</span><span class="p">(</span><span class="n">pw_hash</span><span class="p">,</span> <span class="s">&#39;secret&#39;</span><span class="p">)</span> <span class="c"># returns True</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Params pw_hash:</th><td class="field-body">The hash to be compared against.</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Params password:</th></tr>
+<tr class="field"><td>&nbsp;</td><td class="field-body">The password to compare.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="flaskext.bcrypt.Bcrypt.generate_password_hash">
+<tt class="descname">generate_password_hash</tt><big>(</big><em>password</em>, <em>rounds=None</em><big>)</big><a class="headerlink" href="#flaskext.bcrypt.Bcrypt.generate_password_hash" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a password hash using bcrypt. Specifying <cite>rounds</cite> 
+sets the log_rounds parameter of <cite>bcrypt.gensalt()</cite> which determines 
+the complexity of the salt. 12 is the default value.</p>
+<p>Example usage of <a class="reference internal" href="#flaskext.bcrypt.Bcrypt.generate_password_hash" title="flaskext.bcrypt.Bcrypt.generate_password_hash"><tt class="xref py py-class docutils literal"><span class="pre">generate_password_hash</span></tt></a> might look something 
+like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">pw_hash</span> <span class="o">=</span> <span class="n">bcrypt</span><span class="o">.</span><span class="n">generate_password_hash</span><span class="p">(</span><span class="s">&#39;secret&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name" colspan="2">Params password:</th></tr>
+<tr class="field"><td>&nbsp;</td><td class="field-body">The password to be hashed.</td>
+</tr>
+<tr class="field"><th class="field-name">Params rounds:</th><td class="field-body">The optional number of rounds.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="flaskext.bcrypt.Bcrypt.init_app">
+<tt class="descname">init_app</tt><big>(</big><em>app</em><big>)</big><a class="headerlink" href="#flaskext.bcrypt.Bcrypt.init_app" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initalizes the application with the extension.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Params app:</th><td class="field-body">The Flask application object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <a href="http://github.com/maxcountryman/flask-bcrypt"><img style="position: fixed; top: 0; right: 0; border: 0;"
+    src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+  
+
+  
+  </div>
+  
+
+  </body>
+</html>

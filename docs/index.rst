@@ -1,4 +1,7 @@
-# Flask-Bcrypt
+Flask-Bcrypt
+=============
+
+.. module:: flaskext.bcrypt
 
 Flask-Bcrypt is a Flask extension that provides bcrypt hashing utilities for
 your application.
@@ -12,20 +15,25 @@ optimized for speed, bcrypt is intentionally structured to be slow.
 For sensitive data that must be protected, such as passwords, bcrypt is an
 advisable choice.
 
-## Installation
+.. _Flask-Bcrypt: http://github.com/maxcountryman/flask-bcrypt
+.. _Flask: http://flask.pocoo.org/
+
+Installation
+------------
 
 Install the extension with one of the following commands:
 
     $ easy_install flask-bcrypt
 
-of alternatively if you have pip installed:
+or alternatively if you have pip installed:
     
     $ pip install flask-bcrypt
 
-## Usage
+Usage
+-----
 
 To use the extension simply import the class wrapper and pass the Flask app
-object back to here. Do so like this:
+object back to here. Do so like this::
     
     import flask
     from flaskext.bcrypt import Bcrypt
@@ -34,11 +42,12 @@ object back to here. Do so like this:
     bcrypt = Bcrypt(app)
 
 Two primary hashing methods are now exposed by way of the bcrypt object. Use
-them like so:
+them like so::
 
     pw_hash = bcrypt.generate_password_hash('hunter2')
     bcrypt.check_password_hash(pw_hash, 'hunter2') # returns True
 
-## Documentation
-
-The Sphinx-compiled documentation is available here: http://packages.python.org/Flask-Bcrypt/
+API
+___
+.. autoclass:: flaskext.bcrypt.Bcrypt
+    :members:
