@@ -1,6 +1,7 @@
 .*
 *.pyc
 *.egg-info
+*.orig
 bin/*
 build/*
 dist/*
