@@ -27,18 +27,34 @@ class BasicTestCase(unittest.TestCase):
     def test_check_hash(self):
         pw_hash = self.bcrypt.generate_password_hash('secret')
         # check a correct password
+<<<<<<< HEAD
         self.assertTrue(self.bcrypt.check_password_hash(pw_hash, 'secret'))
         # check an incorrect password
         self.assertFalse(self.bcrypt.check_password_hash(pw_hash, 'hunter2'))
-        # check unicode
-        pw_hash = self.bcrypt.generate_password_hash(u'\u2603')
-        self.assertTrue(self.bcrypt.check_password_hash(pw_hash, u'\u2603'))
-    
-    def test_check_hash_unicode_is_utf8(self):
-        password = u'\u2603'
-        pw_hash = self.bcrypt.generate_password_hash(password)
+=======
+        a = check_password_hash(self.pw_hash, 'secret')
+        self.assertTrue(a)
+        # check a wrong password
+        b = check_password_hash(self.pw_hash, 'test')
+        self.assertFalse(b)
+
+    def test_check_hash_unicode(self):
+        password=u'\u2603'
+        x = generate_password_hash(password)
         # check a correct password
-        self.assertTrue(self.bcrypt.check_password_hash(pw_hash, '\xe2\x98\x83'))
+        a = check_password_hash(x, password)
+        self.assertTrue(a)
+        # check a wrong password
+        b = check_password_hash(x, 'test')
+        self.assertFalse(b)
+
+    def test_check_hash_unicode_is_utf8(self):
+        password=u'\u2603'
+        x = generate_password_hash(password)
+        # check a correct password
+        a = check_password_hash(x, '\xe2\x98\x83')
+        self.assertTrue(a)
+>>>>>>> c593e32757bc044eb55225b20563ec93ae1164c7
     
     def test_rounds_set(self):
         self.assertEquals(self.bcrypt._log_rounds, 6)

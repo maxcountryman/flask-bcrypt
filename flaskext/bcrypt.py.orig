@@ -10,7 +10,7 @@
 
 from __future__ import absolute_import
 
-__version__ = 0.5.1
+__version__ = 0.5
 
 try:
     import bcrypt
@@ -18,6 +18,19 @@ except ImportError, e:
     print 'py-bcrypt is required to use Flask-Bcrypt'
     raise e
 
+<<<<<<< HEAD
+=======
+    if not password:
+        raise ValueError('Password must be non-empty.')
+    
+    if isinstance(password, unicode):
+        password = password.encode('u8')
+    password = str(password)
+    
+    pw_hash = bcrypt.hashpw(password, bcrypt.gensalt(rounds))
+    
+    return pw_hash
+>>>>>>> c593e32757bc044eb55225b20563ec93ae1164c7
 
 def _constant_time_compare(val1, val2):
     '''Returns True if the two strings are equal, False otherwise.
@@ -87,6 +100,10 @@ class Bcrypt(object):
     
     :params app: The Flask application object. Defaults to None.
     '''
+
+    if isinstance(password, unicode):
+        password = password.encode('u8')
+    password = str(password)
     
     def __init__(self, app=None):
         if app is not None:
@@ -119,8 +136,7 @@ class Bcrypt(object):
         
         if rounds is None:
             rounds = self._log_rounds
-        if isinstance(password, unicode):
-            password = password.encode('u8')
+        
         password = str(password)
         return bcrypt.hashpw(password, bcrypt.gensalt(rounds))
     
@@ -138,7 +154,4 @@ class Bcrypt(object):
         :params pw_hash: The hash to be compared against.
         :params password: The password to compare.
         '''
-        if isinstance(password, unicode):
-            password = password.encode('u8')
-        password = str(password)
         return _constant_time_compare(bcrypt.hashpw(password, pw_hash), pw_hash)
