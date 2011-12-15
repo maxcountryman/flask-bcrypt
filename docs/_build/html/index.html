@@ -78,14 +78,14 @@ them like so:</p>
 <dt id="flaskext.bcrypt.Bcrypt">
 <em class="property">class </em><tt class="descclassname">flaskext.bcrypt.</tt><tt class="descname">Bcrypt</tt><big>(</big><em>app=None</em><big>)</big><a class="headerlink" href="#flaskext.bcrypt.Bcrypt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bcrypt class container for password hashing and checking logic using 
-bcrypt. This class may be used to intialize your Flask app object. The 
-purpose is to provide a simple interface for overriding Werkzeug&#8217;s 
-built-in password hashing utilities.</p>
+bcrypt, of course. This class may be used to intialize your Flask app 
+object. The purpose is to provide a simple interface for overriding 
+Werkzeug&#8217;s built-in password hashing utilities.</p>
 <p>Although such methods are not actually overriden, the API is intentionally 
 made similar so that existing applications which make use of the previous 
 hashing functions might be easily adapted to the stronger facility of 
 bcrypt.</p>
-<p>To get started you will wrap you application&#8217;s app object something like 
+<p>To get started you will wrap your application&#8217;s app object something like 
 this:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 <span class="n">bcrypt</span> <span class="o">=</span> <span class="n">Bcrypt</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
@@ -114,7 +114,7 @@ prevent timing attacks. A simple utility method is provided for this:</p>
 you are effectively overriding the bcrypt module. Though it&#8217;s unlikely 
 you would need to access the module outside of the scope of the 
 extension be aware that it&#8217;s overriden.</p>
-<p class="last">Alternatively consider using a different name, such as <cite>flask_bycrypt 
+<p class="last">Alternatively consider using a different name, such as <cite>flask_bcrypt 
 = Bcrypt(app)</cite> to prevent naming collisions.</p>
 </div>
 <p>Additionally a configuration value for <cite>BCRYPT_LOG_ROUNDS</cite> may be set in 
@@ -125,7 +125,7 @@ complexity of the encryption, see bcrypt for more details.)</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Params app:</th><td class="field-body">The Flask application object. Defaults to None.</td>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>app</strong> &#8211; The Flask application object. Defaults to None.</td>
 </tr>
 </tbody>
 </table>
@@ -135,7 +135,7 @@ complexity of the encryption, see bcrypt for more details.)</p>
 <dd><p>Tests a password hash against a candidate password. The candidate 
 password is first hashed and then subsequently compared in constant 
 time to the existing hash. This will either return <cite>True</cite> or <cite>False</cite>.</p>
-<p>Example usage of <a class="reference internal" href="#flaskext.bcrypt.Bcrypt.check_password_hash" title="flaskext.bcrypt.Bcrypt.check_password_hash"><tt class="xref py py-class docutils literal"><span class="pre">check_password_hash</span></tt></a> would look something 
+<p>Example usage of <a class="reference internal" href="#flaskext.bcrypt.check_password_hash" title="flaskext.bcrypt.check_password_hash"><tt class="xref py py-class docutils literal"><span class="pre">check_password_hash</span></tt></a> would look something 
 like this:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">pw_hash</span> <span class="o">=</span> <span class="n">bcrypt</span><span class="o">.</span><span class="n">generate_password_hash</span><span class="p">(</span><span class="s">&#39;secret&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 <span class="n">bcrypt</span><span class="o">.</span><span class="n">check_password_hash</span><span class="p">(</span><span class="n">pw_hash</span><span class="p">,</span> <span class="s">&#39;secret&#39;</span><span class="p">)</span> <span class="c"># returns True</span>
@@ -145,10 +145,11 @@ like this:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Params pw_hash:</th><td class="field-body">The hash to be compared against.</td>
-</tr>
-<tr class="field"><th class="field-name" colspan="2">Params password:</th></tr>
-<tr class="field"><td>&nbsp;</td><td class="field-body">The password to compare.</td>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>pw_hash</strong> &#8211; The hash to be compared against.</li>
+<li><strong>password</strong> &#8211; The password to compare.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -160,7 +161,7 @@ like this:</p>
 <dd><p>Generates a password hash using bcrypt. Specifying <cite>rounds</cite> 
 sets the log_rounds parameter of <cite>bcrypt.gensalt()</cite> which determines 
 the complexity of the salt. 12 is the default value.</p>
-<p>Example usage of <a class="reference internal" href="#flaskext.bcrypt.Bcrypt.generate_password_hash" title="flaskext.bcrypt.Bcrypt.generate_password_hash"><tt class="xref py py-class docutils literal"><span class="pre">generate_password_hash</span></tt></a> might look something 
+<p>Example usage of <a class="reference internal" href="#flaskext.bcrypt.generate_password_hash" title="flaskext.bcrypt.generate_password_hash"><tt class="xref py py-class docutils literal"><span class="pre">generate_password_hash</span></tt></a> might look something 
 like this:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">pw_hash</span> <span class="o">=</span> <span class="n">bcrypt</span><span class="o">.</span><span class="n">generate_password_hash</span><span class="p">(</span><span class="s">&#39;secret&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 </pre></div>
@@ -169,10 +170,11 @@ like this:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name" colspan="2">Params password:</th></tr>
-<tr class="field"><td>&nbsp;</td><td class="field-body">The password to be hashed.</td>
-</tr>
-<tr class="field"><th class="field-name">Params rounds:</th><td class="field-body">The optional number of rounds.</td>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>password</strong> &#8211; The password to be hashed.</li>
+<li><strong>rounds</strong> &#8211; The optional number of rounds.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -186,12 +188,66 @@ like this:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Params app:</th><td class="field-body">The Flask application object.</td>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>app</strong> &#8211; The Flask application object.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="function">
+<dt id="flaskext.bcrypt.generate_password_hash">
+<tt class="descclassname">flaskext.bcrypt.</tt><tt class="descname">generate_password_hash</tt><big>(</big><em>password</em>, <em>rounds=None</em><big>)</big><a class="headerlink" href="#flaskext.bcrypt.generate_password_hash" title="Permalink to this definition">¶</a></dt>
+<dd><p>This helper function wraps the eponymous method of <a class="reference internal" href="#flaskext.bcrypt.Bcrypt" title="flaskext.bcrypt.Bcrypt"><tt class="xref py py-class docutils literal"><span class="pre">Bcrypt</span></tt></a>. It 
+is intended to be used as a helper function at the expense of the 
+configuration variable provided when passing back the app object. In other 
+words this shortcut does not make use of the app object at all.</p>
+<p>To this this function, simple import it from the module and use it in a 
+similar fashion as the method would be used. Here is a quick example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">flaskext.bcrypt</span> <span class="kn">import</span> <span class="n">generate_password_hash</span>
+<span class="n">pw_hash</span> <span class="o">=</span> <span class="n">generate_password_hash</span><span class="p">(</span><span class="s">&#39;hunter2&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>password</strong> &#8211; The password to be hashed.</li>
+<li><strong>rounds</strong> &#8211; The optional number of rounds.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="flaskext.bcrypt.check_password_hash">
+<tt class="descclassname">flaskext.bcrypt.</tt><tt class="descname">check_password_hash</tt><big>(</big><em>pw_hash</em>, <em>password</em><big>)</big><a class="headerlink" href="#flaskext.bcrypt.check_password_hash" title="Permalink to this definition">¶</a></dt>
+<dd><p>This helper function wraps the eponymous method of <tt class="xref py py-class docutils literal"><span class="pre">Bcrypt.</span></tt> It 
+is intended to be used as a helper function at the expense of the 
+configuration variable provided when passing back the app object. In other 
+words this shortcut does not make use of the app object at all.</p>
+<p>To this this function, simple import it from the module and use it in a 
+similar fashion as the method would be used. Here is a quick example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">flaskext.bcrypt</span> <span class="kn">import</span> <span class="n">check_password_hash</span>
+<span class="n">check_password_hash</span><span class="p">(</span><span class="n">pw_hash</span><span class="p">,</span> <span class="s">&#39;hunter2&#39;</span><span class="p">)</span> <span class="c"># returns True</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>pw_hash</strong> &#8211; The hash to be compared against.</li>
+<li><strong>password</strong> &#8211; The password to compare.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>

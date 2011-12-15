@@ -32,7 +32,7 @@ def generate_password_hash(password, rounds=None):
         pw_hash = generate_password_hash('hunter2', 10)
     
     :param password: The password to be hashed.
-    :params rounds: The optional number of rounds.
+    :param rounds: The optional number of rounds.
     '''
     return Bcrypt().generate_password_hash(password, rounds)
 
@@ -49,8 +49,8 @@ def check_password_hash(pw_hash, password):
         from flaskext.bcrypt import check_password_hash
         check_password_hash(pw_hash, 'hunter2') # returns True
     
-    :params pw_hash: The hash to be compared against.
-    :params password: The password to compare.
+    :param pw_hash: The hash to be compared against.
+    :param password: The password to compare.
     '''
     return Bcrypt().check_password_hash(pw_hash, password)
 
@@ -113,7 +113,7 @@ class Bcrypt(object):
         you would need to access the module outside of the scope of the 
         extension be aware that it's overriden.
         
-        Alternatively consider using a different name, such as `flask_bycrypt 
+        Alternatively consider using a different name, such as `flask_bcrypt 
         = Bcrypt(app)` to prevent naming collisions.
     
     Additionally a configuration value for `BCRYPT_LOG_ROUNDS` may be set in 
@@ -121,7 +121,7 @@ class Bcrypt(object):
     internally be assigned to 12. (This value is used in determining the 
     complexity of the encryption, see bcrypt for more details.)
     
-    :params app: The Flask application object. Defaults to None.
+    :param app: The Flask application object. Defaults to None.
     '''
     
     _log_rounds = 12
@@ -133,7 +133,7 @@ class Bcrypt(object):
     def init_app(self, app):
         '''Initalizes the application with the extension.
         
-        :params app: The Flask application object.
+        :param app: The Flask application object.
         '''
         self.app = app
         self._log_rounds = app.config.get('BCRYPT_LOG_ROUNDS', 12)
@@ -148,8 +148,8 @@ class Bcrypt(object):
             
             pw_hash = bcrypt.generate_password_hash('secret', 10)
         
-        :params password: The password to be hashed.
-        :params rounds: The optional number of rounds.
+        :param password: The password to be hashed.
+        :param rounds: The optional number of rounds.
         '''
         
         if not password:
@@ -173,8 +173,8 @@ class Bcrypt(object):
             pw_hash = bcrypt.generate_password_hash('secret', 10)
             bcrypt.check_password_hash(pw_hash, 'secret') # returns True
         
-        :params pw_hash: The hash to be compared against.
-        :params password: The password to compare.
+        :param pw_hash: The hash to be compared against.
+        :param password: The password to compare.
         '''
         if isinstance(password, unicode):
             password = password.encode('u8')

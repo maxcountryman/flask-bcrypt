@@ -9,7 +9,7 @@ from setuptools import setup
 
 setup(
     name='Flask-Bcrypt',
-    version='0.5.1',
+    version='0.5.2',
     url='https://github.com/maxcountryman/flask-bcrypt',
     license='BSD',
     author='Max Countryman',

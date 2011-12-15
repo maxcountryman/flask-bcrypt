@@ -51,3 +51,8 @@ API
 ___
 .. autoclass:: flaskext.bcrypt.Bcrypt
     :members:
+
+.. autofunction:: flaskext.bcrypt.generate_password_hash
+
+.. autofunction:: flaskext.bcrypt.check_password_hash
+
