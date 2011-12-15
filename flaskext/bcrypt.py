@@ -10,13 +10,49 @@
 
 from __future__ import absolute_import
 
-__version__ = 0.5.1
+__version__ = '0.5.2'
 
 try:
     import bcrypt
 except ImportError, e:
     print 'py-bcrypt is required to use Flask-Bcrypt'
     raise e
+
+
+def generate_password_hash(password, rounds=None):
+    '''This helper function wraps the eponymous method of :class:`Bcrypt`. It 
+    is intended to be used as a helper function at the expense of the 
+    configuration variable provided when passing back the app object. In other 
+    words this shortcut does not make use of the app object at all.
+    
+    To this this function, simple import it from the module and use it in a 
+    similar fashion as the method would be used. Here is a quick example::
+        
+        from flaskext.bcrypt import generate_password_hash
+        pw_hash = generate_password_hash('hunter2', 10)
+    
+    :param password: The password to be hashed.
+    :params rounds: The optional number of rounds.
+    '''
+    return Bcrypt().generate_password_hash(password, rounds)
+
+
+def check_password_hash(pw_hash, password):
+    '''This helper function wraps the eponymous method of :class:`Bcrypt.` It 
+    is intended to be used as a helper function at the expense of the 
+    configuration variable provided when passing back the app object. In other 
+    words this shortcut does not make use of the app object at all.
+    
+    To this this function, simple import it from the module and use it in a 
+    similar fashion as the method would be used. Here is a quick example::
+        
+        from flaskext.bcrypt import check_password_hash
+        check_password_hash(pw_hash, 'hunter2') # returns True
+    
+    :params pw_hash: The hash to be compared against.
+    :params password: The password to compare.
+    '''
+    return Bcrypt().check_password_hash(pw_hash, password)
 
 
 def _constant_time_compare(val1, val2):
@@ -37,16 +73,16 @@ def _constant_time_compare(val1, val2):
 
 class Bcrypt(object):
     '''Bcrypt class container for password hashing and checking logic using 
-    bcrypt. This class may be used to intialize your Flask app object. The 
-    purpose is to provide a simple interface for overriding Werkzeug's 
-    built-in password hashing utilities.
+    bcrypt, of course. This class may be used to intialize your Flask app 
+    object. The purpose is to provide a simple interface for overriding 
+    Werkzeug's built-in password hashing utilities.
     
     Although such methods are not actually overriden, the API is intentionally 
     made similar so that existing applications which make use of the previous 
     hashing functions might be easily adapted to the stronger facility of 
     bcrypt.
     
-    To get started you will wrap you application's app object something like 
+    To get started you will wrap your application's app object something like 
     this::
         
         app = Flask(__name__)
@@ -87,6 +123,8 @@ class Bcrypt(object):
     
     :params app: The Flask application object. Defaults to None.
     '''
+    
+    _log_rounds = 12
     
     def __init__(self, app=None):
         if app is not None:
