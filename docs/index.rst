@@ -35,7 +35,7 @@ Usage
 To use the extension simply import the class wrapper and pass the Flask app
 object back to here. Do so like this::
     
-    import flask
+    from flask import Flask
     from flaskext.bcrypt import Bcrypt
     
     app = Flask(__name__)
