@@ -101,7 +101,7 @@ class Bcrypt(object):
     prevent timing attacks. A simple utility method is provided for this::
         
         candidate = 'secret'
-        bcrypt.check_password_hash(candidate, pw_hash)
+        bcrypt.check_password_hash(pw_hash, candidate)
     
     If both the candidate and the existing password hash are a match 
     `check_password_hash` returns True. Otherwise, it returns False.
