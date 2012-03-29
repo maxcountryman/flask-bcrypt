@@ -29,6 +29,12 @@ or alternatively if you have pip installed:
     
     $ pip install flask-bcrypt
 
+.. note::
+    You need Python Development Headers to install py-bcrypt package, needed
+    as a dependency. If you are on Mac OS or Windows, you probably have it
+    already installed. Otherwise look for python-dev package for Debian-based
+    distributives and for python-devel package for RedHat-based.
+
 Usage
 -----
 
