@@ -16,8 +16,7 @@ setup(
     author_email='maxc@me.com',
     description='Brcrypt hashing for Flask.',
     long_description=__doc__,
-    packages=['flaskext'],
-    namespace_packages=['flaskext'],
+    py_modules=['flask_bcrypt'],
     zip_safe=False,
     platforms='any',
     install_requires=[
