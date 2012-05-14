@@ -42,7 +42,7 @@ To use the extension simply import the class wrapper and pass the Flask app
 object back to here. Do so like this::
     
     from flask import Flask
-    from flask_bcrypt import Bcrypt
+    from flask.ext.bcrypt import Bcrypt
     
     app = Flask(__name__)
     bcrypt = Bcrypt(app)
@@ -55,10 +55,10 @@ them like so::
 
 API
 ___
-.. autoclass:: flaskext.bcrypt.Bcrypt
+.. autoclass:: flask.ext.bcrypt.Bcrypt
     :members:
 
-.. autofunction:: flaskext.bcrypt.generate_password_hash
+.. autofunction:: flask.ext.bcrypt.generate_password_hash
 
-.. autofunction:: flaskext.bcrypt.check_password_hash
+.. autofunction:: flask.ext.bcrypt.check_password_hash
 

@@ -28,7 +28,7 @@ def generate_password_hash(password, rounds=None):
     To this this function, simple import it from the module and use it in a 
     similar fashion as the method would be used. Here is a quick example::
         
-        from flask_bcrypt import generate_password_hash
+        from flask.ext.bcrypt import generate_password_hash
         pw_hash = generate_password_hash('hunter2', 10)
     
     :param password: The password to be hashed.
@@ -46,7 +46,7 @@ def check_password_hash(pw_hash, password):
     To this this function, simple import it from the module and use it in a 
     similar fashion as the method would be used. Here is a quick example::
         
-        from flask_bcrypt import check_password_hash
+        from flask.ext.bcrypt import check_password_hash
         check_password_hash(pw_hash, 'hunter2') # returns True
     
     :param pw_hash: The hash to be compared against.
