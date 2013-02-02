@@ -135,7 +135,6 @@ class Bcrypt(object):
         
         :param app: The Flask application object.
         '''
-        self.app = app
         self._log_rounds = app.config.get('BCRYPT_LOG_ROUNDS', 12)
     
     def generate_password_hash(self, password, rounds=None):
