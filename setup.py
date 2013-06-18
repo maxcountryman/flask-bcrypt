@@ -7,9 +7,15 @@
 
 from setuptools import setup
 
+module_path = os.path.join(os.path.dirname(__file__), 'flask_bcrypt.py')
+version_line = filter(lambda l: l.startswith('__version_info__'),
+                      open(module_path))[0]
+
+__version__ = '.'.join(eval(version_line.split('__version_info__ = ')[-1]))
+
 setup(
     name='Flask-Bcrypt',
-    version='0.5.2',
+    version=__version__,
     url='https://github.com/maxcountryman/flask-bcrypt',
     license='BSD',
     author='Max Countryman',
@@ -19,10 +25,7 @@ setup(
     py_modules=['flask_bcrypt'],
     zip_safe=False,
     platforms='any',
-    install_requires=[
-        'Flask',
-        'py-bcrypt'
-    ],
+    install_requires=['Flask', 'py-bcrypt'],
     classifiers=[
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
