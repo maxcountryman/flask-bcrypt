@@ -5,6 +5,8 @@
     Bcrypt hashing for your Flask.
 '''
 
+import os
+
 from setuptools import setup
 
 module_path = os.path.join(os.path.dirname(__file__), 'flask_bcrypt.py')
