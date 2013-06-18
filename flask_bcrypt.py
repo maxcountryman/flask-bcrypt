@@ -10,7 +10,9 @@
 
 from __future__ import absolute_import
 
-__version__ = '0.5.2'
+from werkzeug.security import safe_str_cmp
+
+__version__ = '0.5.3'
 
 try:
     import bcrypt
@@ -53,22 +55,6 @@ def check_password_hash(pw_hash, password):
     :param password: The password to compare.
     '''
     return Bcrypt().check_password_hash(pw_hash, password)
-
-
-def _constant_time_compare(val1, val2):
-    '''Returns True if the two strings are equal, False otherwise.
-    
-    The time taken is independent of the number of characters that match.
-    '''
-    
-    if len(val1) != len(val2):
-        return False
-    
-    result = 0
-    for x, y in zip(val1, val2):
-        result |= ord(x) ^ ord(y)
-    
-    return result == 0
 
 
 class Bcrypt(object):
@@ -178,4 +164,4 @@ class Bcrypt(object):
         if isinstance(password, unicode):
             password = password.encode('u8')
         password = str(password)
-        return _constant_time_compare(bcrypt.hashpw(password, pw_hash), pw_hash)
+        return safe_str_cmp(bcrypt.hashpw(password, pw_hash), pw_hash)
