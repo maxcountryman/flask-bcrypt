@@ -21,9 +21,9 @@ from werkzeug.security import safe_str_cmp
 
 try:
     import bcrypt
-except ImportError, e:
-    print 'py-bcrypt is required to use Flask-Bcrypt'
-    raise e
+except ImportError:
+    print('py-bcrypt is required to use Flask-Bcrypt')
+    raise
 
 
 def generate_password_hash(password, rounds=None):
