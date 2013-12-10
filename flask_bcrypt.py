@@ -21,9 +21,9 @@ from werkzeug.security import safe_str_cmp
 
 try:
     import bcrypt
-except ImportError, e:
-    print 'py-bcrypt is required to use Flask-Bcrypt'
-    raise e
+except ImportError:
+    print('py-bcrypt is required to use Flask-Bcrypt')
+    raise
 
 
 def generate_password_hash(password, rounds=None):
@@ -147,7 +147,7 @@ class Bcrypt(object):
         
         if rounds is None:
             rounds = self._log_rounds
-        if isinstance(password, unicode):
+        if isinstance(password, str):
             password = password.encode('u8')
         password = str(password)
         return bcrypt.hashpw(password, bcrypt.gensalt(rounds))
@@ -166,7 +166,7 @@ class Bcrypt(object):
         :param pw_hash: The hash to be compared against.
         :param password: The password to compare.
         '''
-        if isinstance(password, unicode):
+        if isinstance(password, str):
             password = password.encode('u8')
         password = str(password)
         return safe_str_cmp(bcrypt.hashpw(password, pw_hash), pw_hash)
