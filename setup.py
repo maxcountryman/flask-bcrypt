@@ -10,8 +10,8 @@ import os
 from setuptools import setup
 
 module_path = os.path.join(os.path.dirname(__file__), 'flask_bcrypt.py')
-version_line = filter(lambda l: l.startswith('__version_info__'),
-                      open(module_path))[0]
+version_line = list(filter(
+    lambda l: l.startswith('__version_info__'), open(module_path)))[0]
 
 __version__ = '.'.join(eval(version_line.split('__version_info__ = ')[-1]))
 
