@@ -136,32 +136,28 @@ class Bcrypt(object):
         ensuring that strings are correctly converted to bytes (Python 3)
         or strings (Python 2).'''
         if PY3K:
-            # Password is either a regular or unicode string
-            if isinstance(password, str):
-                # Attempt to treat the password as a regular ASCII string by
-                # constructing a byte array of each character
-                try:
-                    return bytes(bytearray([ord(c) for c in password]))
-                # A value error will occur if any of the characters have an
-                # integer representation of more than 255 which implies that
-                # the string is not ASCII.  In such cases, we treat the input
-                # password as a unicode string.
-                except ValueError:
-                    return password.encode('u8')
-            # Password is already bytes
-            elif isinstance(password, bytes):
+            # Password is already bytes so it can be returned immediately
+            if isinstance(password, bytes):
                 return password
-            # Password is another data type and must be cast to bytes
+            # Otherwise, we cast the password to str for further processing
             else:
-                return (str(password)).encode('ascii')
+                password_str = str(password)
+
+            # Attempt to treat the password as a regular ASCII string by
+            # constructing a byte array of each character
+            try:
+                return bytes(bytearray([ord(c) for c in password_str]))
+            # A value error will occur if any of the characters have an
+            # integer representation of more than 255 which implies that
+            # the string is not ASCII.  In such cases, we treat the input
+            # password as a unicode string.
+            except ValueError:
+                return password_str.encode('u8')
         else:
             # Password is unicode and must be encoded to a string
             if isinstance(password, unicode):
                 return password.encode('u8')
-            # Password is already a string
-            elif isinstance(password, str):
-                return password
-            # Password is another data type and must be cast to a string
+            # Otherwise, we cast the password to str
             else:
                 return str(password)
 
