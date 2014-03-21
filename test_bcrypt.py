@@ -33,6 +33,9 @@ class BasicTestCase(unittest.TestCase):
         # check unicode
         pw_hash = self.bcrypt.generate_password_hash(u'\u2603')
         self.assertTrue(self.bcrypt.check_password_hash(pw_hash, u'\u2603'))
+        # check list
+        pw_hash = self.bcrypt.generate_password_hash([u'\u2603', 'abc'])
+        self.assertTrue(self.bcrypt.check_password_hash(pw_hash, str([u'\u2603', 'abc'])))
         # check helpers
         pw_hash = generate_password_hash('hunter2')
         self.assertTrue(check_password_hash(pw_hash, 'hunter2'))
@@ -44,7 +47,7 @@ class BasicTestCase(unittest.TestCase):
         self.assertTrue(self.bcrypt.check_password_hash(pw_hash, '\xe2\x98\x83'))
 
     def test_rounds_set(self):
-        self.assertEquals(self.bcrypt._log_rounds, 6)
+        self.assertEqual(self.bcrypt._log_rounds, 6)
 
 
 if __name__ == '__main__':

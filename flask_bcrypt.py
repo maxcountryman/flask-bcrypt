@@ -9,6 +9,7 @@
 '''
 
 from __future__ import absolute_import
+import sys
 
 __version_info__ = ('0', '5', '3')
 __version__ = '.'.join(__version_info__)
@@ -21,9 +22,11 @@ from werkzeug.security import safe_str_cmp
 
 try:
     import bcrypt
-except ImportError, e:
-    print 'py-bcrypt is required to use Flask-Bcrypt'
-    raise e
+except ImportError:
+    print('py-bcrypt is required to use Flask-Bcrypt')
+    raise
+
+PY3K = sys.version_info[0] == 3
 
 
 def generate_password_hash(password, rounds=None):
@@ -128,6 +131,36 @@ class Bcrypt(object):
         '''
         self._log_rounds = app.config.get('BCRYPT_LOG_ROUNDS', 12)
     
+    def prepare_password(self, password):
+        '''This function prepares a password for sending to Bcrypt by
+        ensuring that strings are correctly converted to bytes (Python 3)
+        or strings (Python 2).'''
+        if PY3K:
+            # Password is already bytes so it can be returned immediately
+            if isinstance(password, bytes):
+                return password
+            # Otherwise, we cast the password to str for further processing
+            else:
+                password_str = str(password)
+
+            # Attempt to treat the password as a regular ASCII string by
+            # constructing a byte array of each character
+            try:
+                return bytes(bytearray([ord(c) for c in password_str]))
+            # A value error will occur if any of the characters have an
+            # integer representation of more than 255 which implies that
+            # the string is not ASCII.  In such cases, we treat the input
+            # password as a unicode string.
+            except ValueError:
+                return password_str.encode('u8')
+        else:
+            # Password is unicode and must be encoded to a string
+            if isinstance(password, unicode):
+                return password.encode('u8')
+            # Otherwise, we cast the password to str
+            else:
+                return str(password)
+
     def generate_password_hash(self, password, rounds=None):
         '''Generates a password hash using bcrypt. Specifying `rounds` 
         sets the log_rounds parameter of `bcrypt.gensalt()` which determines 
@@ -147,10 +180,8 @@ class Bcrypt(object):
         
         if rounds is None:
             rounds = self._log_rounds
-        if isinstance(password, unicode):
-            password = password.encode('u8')
-        password = str(password)
-        return bcrypt.hashpw(password, bcrypt.gensalt(rounds))
+        return bcrypt.hashpw(
+            self.prepare_password(password), bcrypt.gensalt(rounds))
     
     def check_password_hash(self, pw_hash, password):
         '''Tests a password hash against a candidate password. The candidate 
@@ -166,7 +197,5 @@ class Bcrypt(object):
         :param pw_hash: The hash to be compared against.
         :param password: The password to compare.
         '''
-        if isinstance(password, unicode):
-            password = password.encode('u8')
-        password = str(password)
-        return safe_str_cmp(bcrypt.hashpw(password, pw_hash), pw_hash)
+        return safe_str_cmp(
+            bcrypt.hashpw(self.prepare_password(password), pw_hash), pw_hash)
