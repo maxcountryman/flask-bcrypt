@@ -9,6 +9,7 @@
 '''
 
 from __future__ import absolute_import
+from __future__ import print_function
 
 __version_info__ = ('0', '5', '3')
 __version__ = '.'.join(__version_info__)
@@ -21,10 +22,12 @@ from werkzeug.security import safe_str_cmp
 
 try:
     import bcrypt
-except ImportError, e:
-    print 'py-bcrypt is required to use Flask-Bcrypt'
+except ImportError as e:
+    print('py-bcrypt is required to use Flask-Bcrypt')
     raise e
 
+from sys import version_info as PYVER
+PYVER = PYVER[0]
 
 def generate_password_hash(password, rounds=None):
     '''This helper function wraps the eponymous method of :class:`Bcrypt`. It 
@@ -147,8 +150,11 @@ class Bcrypt(object):
         
         if rounds is None:
             rounds = self._log_rounds
-        if isinstance(password, unicode):
+        
+        if PYVER < 3 and isinstance(password, unicode):
             password = password.encode('u8')
+        elif PYVER >= 3 and isinstance(password, bytes):
+            password = password.decode('utf-8')
         password = str(password)
         return bcrypt.hashpw(password, bcrypt.gensalt(rounds))
     
@@ -166,7 +172,9 @@ class Bcrypt(object):
         :param pw_hash: The hash to be compared against.
         :param password: The password to compare.
         '''
-        if isinstance(password, unicode):
+        if PYVER < 3 and isinstance(password, unicode):
             password = password.encode('u8')
+        elif PYVER >= 3 and isinstance(password, bytes):
+            password = password.decode('utf-8')
         password = str(password)
         return safe_str_cmp(bcrypt.hashpw(password, pw_hash), pw_hash)

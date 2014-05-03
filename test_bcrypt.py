@@ -41,10 +41,10 @@ class BasicTestCase(unittest.TestCase):
         password = u'\u2603'
         pw_hash = self.bcrypt.generate_password_hash(password)
         # check a correct password
-        self.assertTrue(self.bcrypt.check_password_hash(pw_hash, '\xe2\x98\x83'))
+        self.assertTrue(self.bcrypt.check_password_hash(pw_hash, b'\xe2\x98\x83'))
 
     def test_rounds_set(self):
-        self.assertEquals(self.bcrypt._log_rounds, 6)
+        self.assertEqual(self.bcrypt._log_rounds, 6)
 
 
 if __name__ == '__main__':
