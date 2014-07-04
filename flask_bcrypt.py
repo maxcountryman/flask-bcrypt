@@ -23,7 +23,7 @@ from werkzeug.security import safe_str_cmp
 try:
     import bcrypt
 except ImportError as e:
-    print('py-bcrypt is required to use Flask-Bcrypt')
+    print('python-bcrypt is required to use Flask-Bcrypt')
     raise e
 
 from sys import version_info as PYVER
