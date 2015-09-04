@@ -155,8 +155,19 @@ class Bcrypt(object):
             password = password.encode('u8')
         elif PYVER >= 3 and isinstance(password, bytes):
             password = password.decode('utf-8')
-        password = str(password)
-        return bcrypt.hashpw(password, bcrypt.gensalt(rounds))
+
+        if PYVER < 3:
+            password = str(password)
+        else:
+            password = str(password).encode('utf-8')
+
+        hashed = bcrypt.hashpw(password, bcrypt.gensalt(rounds))
+        if PYVER < 3:
+            pass
+        else:
+            hashed = hashed.decode('utf-8')
+
+        return hashed
     
     def check_password_hash(self, pw_hash, password):
         '''Tests a password hash against a candidate password. The candidate 
@@ -176,5 +187,15 @@ class Bcrypt(object):
             password = password.encode('u8')
         elif PYVER >= 3 and isinstance(password, bytes):
             password = password.decode('utf-8')
-        password = str(password)
-        return safe_str_cmp(bcrypt.hashpw(password, pw_hash), pw_hash)
+
+        if PYVER < 3:
+            if isinstance(pw_hash, unicode):
+                pw_hash = pw_hash.encode('u8')
+        else:
+            password = password.encode('utf-8')
+            pw_hash = pw_hash.encode('utf-8')
+
+        hashed = bcrypt.hashpw(password, pw_hash)
+        hashed = hashed.decode("utf-8")
+
+        return safe_str_cmp(hashed, pw_hash)
