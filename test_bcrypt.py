@@ -1,7 +1,10 @@
 import unittest
 
 import flask
-from flask_bcrypt import Bcrypt, generate_password_hash, check_password_hash
+from flask_bcrypt import (Bcrypt,
+                          check_password_hash,
+                          generate_password_hash,
+                          PY3)
 
 
 class BasicTestCase(unittest.TestCase):
@@ -13,11 +16,10 @@ class BasicTestCase(unittest.TestCase):
 
     def test_is_string(self):
         pw_hash = self.bcrypt.generate_password_hash('secret')
-        self.assertTrue(isinstance(pw_hash, str))
-
-    def test_not_string(self):
-        pw_hash = self.bcrypt.generate_password_hash(42)
-        self.assertTrue(isinstance(pw_hash, str))
+        if PY3:
+            self.assertTrue(isinstance(pw_hash, bytes))
+        else:
+            self.assertTrue(isinstance(pw_hash, str))
 
     def test_custom_rounds(self):
         password = 'secret'

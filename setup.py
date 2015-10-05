@@ -1,7 +1,7 @@
 '''
     Flask-Bcrypt
     ------------
-    
+
     Bcrypt hashing for your Flask.
 '''
 
@@ -30,7 +30,7 @@ setup(
     py_modules=['flask_bcrypt'],
     zip_safe=False,
     platforms='any',
-    install_requires=['Flask', 'py-bcrypt>=0.3'],
+    install_requires=['Flask', 'bcrypt'],
     classifiers=[
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
