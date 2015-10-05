@@ -1,3 +1,4 @@
+# coding:utf-8
 import unittest
 
 import flask
@@ -47,6 +48,11 @@ class BasicTestCase(unittest.TestCase):
 
     def test_rounds_set(self):
         self.assertEqual(self.bcrypt._log_rounds, 6)
+
+    def test_unicode_hash(self):
+        password = u'東京'
+        h = generate_password_hash(password).decode('utf-8')
+        self.assertIs(check_password_hash(h, password), True)
 
 
 if __name__ == '__main__':
