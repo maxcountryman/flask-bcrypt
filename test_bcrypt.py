@@ -52,7 +52,7 @@ class BasicTestCase(unittest.TestCase):
     def test_unicode_hash(self):
         password = u'東京'
         h = generate_password_hash(password).decode('utf-8')
-        self.assertIs(check_password_hash(h, password), True)
+        self.assertTrue(check_password_hash(h, password))
 
 
 if __name__ == '__main__':
