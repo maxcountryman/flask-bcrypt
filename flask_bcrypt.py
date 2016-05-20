@@ -116,11 +116,16 @@ class Bcrypt(object):
     the configuration of the Flask app. If none is provided this will 
     internally be assigned to 12. (This value is used in determining the 
     complexity of the encryption, see bcrypt for more details.)
-    
+
+    You may also set the hash version using the `BCRYPT_HASH_PREFIX` field in
+    the configuration of the Flask app. If not set, this will default to `2b`.
+    (See bcrypt for more details)
+
     :param app: The Flask application object. Defaults to None.
     '''
 
     _log_rounds = 12
+    _prefix = '2b'
 
     def __init__(self, app=None):
         if app is not None:
@@ -132,11 +137,14 @@ class Bcrypt(object):
         :param app: The Flask application object.
         '''
         self._log_rounds = app.config.get('BCRYPT_LOG_ROUNDS', 12)
-    
-    def generate_password_hash(self, password, rounds=None):
-        '''Generates a password hash using bcrypt. Specifying `rounds` 
-        sets the log_rounds parameter of `bcrypt.gensalt()` which determines 
-        the complexity of the salt. 12 is the default value.
+        self._prefix = app.config.get('BCRYPT_HASH_PREFIX', '2b')
+
+    def generate_password_hash(self, password, rounds=None, prefix=None):
+        '''Generates a password hash using bcrypt. Specifying `rounds`
+        sets the log_rounds parameter of `bcrypt.gensalt()` which determines
+        the complexity of the salt. 12 is the default value. Specifying `prefix`
+        sets the `prefix` parameter of `bcrypt.gensalt()` which determines the 
+        version of the algorithm used to create the hash.
 
         Example usage of :class:`generate_password_hash` might look something 
         like this::
@@ -145,6 +153,7 @@ class Bcrypt(object):
 
         :param password: The password to be hashed.
         :param rounds: The optional number of rounds.
+        :param prefix: The algorithm version to use.
         '''
 
         if not password:
@@ -152,15 +161,23 @@ class Bcrypt(object):
 
         if rounds is None:
             rounds = self._log_rounds
+        if prefix is None:
+            prefix = self._prefix
 
         # Python 3 unicode strings must be encoded as bytes before hashing.
-        if PY3 and isinstance(password, str):
-            password = bytes(password, 'utf-8')
+        if PY3:
+            if isinstance(password, str):
+                password = bytes(password, 'utf-8')
+            if isinstance(prefix, str):
+                prefix = bytes(prefix, 'utf-8')
+        else:
+            if isinstance(password, unicode):
+                password = password.encode('utf-8')
+            if isinstance(prefix, unicode):
+                prefix = prefix.encode('utf-8')
 
-        if not PY3 and isinstance(password, unicode):
-            password = password.encode('utf-8')
-
-        return bcrypt.hashpw(password, bcrypt.gensalt(rounds))
+        salt = bcrypt.gensalt(rounds=rounds, prefix=prefix)
+        return bcrypt.hashpw(password, salt)
 
     def check_password_hash(self, pw_hash, password):
         '''Tests a password hash against a candidate password. The candidate 
