@@ -13,6 +13,7 @@ class BasicTestCase(unittest.TestCase):
     def setUp(self):
         app = flask.Flask(__name__)
         app.config['BCRYPT_LOG_ROUNDS'] = 6
+        app.config['BCRYPT_HASH_IDENT'] = '2b'
         self.bcrypt = Bcrypt(app)
 
     def test_is_string(self):
