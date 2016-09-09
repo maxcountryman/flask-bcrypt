@@ -47,11 +47,15 @@ object back to here. Do so like this::
     app = Flask(__name__)
     bcrypt = Bcrypt(app)
 
-Two primary hashing methods are now exposed by way of the bcrypt object. Use
+Two primary hashing methods are now exposed by way of the bcrypt object. In Python 2, use
 them like so::
 
     pw_hash = bcrypt.generate_password_hash('hunter2')
     bcrypt.check_password_hash(pw_hash, 'hunter2') # returns True
+    
+In Python 3, you need to use decode('utf-8') on generate_password_hash(), like below:
+
+    pw_hash = bcrypt.generate_password_hash('hunter2').decode('utf-8')
 
 API
 ___
