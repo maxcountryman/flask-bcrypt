@@ -1,7 +1,7 @@
 Flask-Bcrypt
 =============
 
-.. module:: flaskext.bcrypt
+.. module:: flask_bcrypt
 
 Flask-Bcrypt is a Flask extension that provides bcrypt hashing utilities for
 your application.
