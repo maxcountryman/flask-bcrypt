@@ -59,10 +59,10 @@ In Python 3, you need to use decode('utf-8') on generate_password_hash(), like b
 
 API
 ___
-.. autoclass:: flask.ext.bcrypt.Bcrypt
+.. autoclass:: flask_bcrypt.Bcrypt
     :members:
 
-.. autofunction:: flask.ext.bcrypt.generate_password_hash
+.. autofunction:: flask_bcrypt.generate_password_hash
 
-.. autofunction:: flask.ext.bcrypt.check_password_hash
+.. autofunction:: flask_bcrypt.check_password_hash
 
