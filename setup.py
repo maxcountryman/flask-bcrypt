@@ -30,7 +30,7 @@ setup(
     py_modules=['flask_bcrypt'],
     zip_safe=False,
     platforms='any',
-    install_requires=['Flask', 'bcrypt'],
+    install_requires=['Flask', 'bcrypt==3.1.1'],
     classifiers=[
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
