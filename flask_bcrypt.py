@@ -166,10 +166,10 @@ class Bcrypt(object):
 
         # Python 3 unicode strings must be encoded as bytes before hashing.
         if PY3:
-            if isinstance(password, str):
-                password = bytes(password, 'utf-8')
-            if isinstance(prefix, str):
-                prefix = bytes(prefix, 'utf-8')
+            if isinstance(password, bytes):
+                password = password.decode('utf-8')
+            if isinstance(prefix, bytes):
+                prefix = prefix.decode('utf-8')
         else:
             if isinstance(password, unicode):
                 password = password.encode('utf-8')
@@ -195,11 +195,11 @@ class Bcrypt(object):
         '''
 
         # Python 3 unicode strings must be encoded as bytes before hashing.
-        if PY3 and isinstance(pw_hash, str):
-            pw_hash = bytes(pw_hash, 'utf-8')
+        if PY3 and isinstance(pw_hash, bytes):
+            pw_hash = pw_hash.decode('utf-8')
 
-        if PY3 and isinstance(password, str):
-            password = bytes(password, 'utf-8')
+        if PY3 and isinstance(password, bytes):
+            password = password.decode('utf-8')
 
         if not PY3 and isinstance(pw_hash, unicode):
             pw_hash = pw_hash.encode('utf-8')
