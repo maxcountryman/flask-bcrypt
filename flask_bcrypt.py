@@ -26,6 +26,8 @@ except ImportError as e:
     print('bcrypt is required to use Flask-Bcrypt')
     raise e
 
+import hashlib
+
 from sys import version_info
 
 PY3 = version_info[0] >= 3
@@ -121,11 +123,23 @@ class Bcrypt(object):
     the configuration of the Flask app. If not set, this will default to `2b`.
     (See bcrypt for more details)
 
+    By default, the bcrypt algorithm has a maximum password length of 72 bytes
+    and ignores any bytes beyond that. A common workaround is to hash the
+    given password using a cryptographic hash (such as `sha256`), take its
+    hexdigest to prevent NULL byte problems, and hash the result with bcrypt.
+    If the `BCRYPT_HANDLE_LONG_PASSWORDS` configuration value is set to `True`,
+    the workaround described above will be enabled.
+    **Warning: do not enable this option on a project that is already using
+    Flask-Bcrypt, or you will break password checking.**
+    **Warning: if this option is enabled on an existing project, disabling it
+    will break password checking.**
+
     :param app: The Flask application object. Defaults to None.
     '''
 
     _log_rounds = 12
     _prefix = '2b'
+    _handle_long_passwords = False
 
     def __init__(self, app=None):
         if app is not None:
@@ -138,6 +152,24 @@ class Bcrypt(object):
         '''
         self._log_rounds = app.config.get('BCRYPT_LOG_ROUNDS', 12)
         self._prefix = app.config.get('BCRYPT_HASH_PREFIX', '2b')
+        self._handle_long_passwords = app.config.get(
+            'BCRYPT_HANDLE_LONG_PASSWORDS', False)
+
+    def _unicode_to_bytes(self, unicode_string):
+        '''Converts a unicode string to a bytes object.
+
+        :param unicode_string: The unicode string to convert.'''
+        if PY3:
+            if isinstance(unicode_string, str):
+                bytes_object = bytes(unicode_string, 'utf-8')
+            else:
+                bytes_object = unicode_string
+        else:
+            if isinstance(unicode_string, unicode):
+                bytes_object = unicode_string.encode('utf-8')
+            else:
+                bytes_object = unicode_string
+        return bytes_object
 
     def generate_password_hash(self, password, rounds=None, prefix=None):
         '''Generates a password hash using bcrypt. Specifying `rounds`
@@ -165,16 +197,12 @@ class Bcrypt(object):
             prefix = self._prefix
 
         # Python 3 unicode strings must be encoded as bytes before hashing.
-        if PY3:
-            if isinstance(password, str):
-                password = bytes(password, 'utf-8')
-            if isinstance(prefix, str):
-                prefix = bytes(prefix, 'utf-8')
-        else:
-            if isinstance(password, unicode):
-                password = password.encode('utf-8')
-            if isinstance(prefix, unicode):
-                prefix = prefix.encode('utf-8')
+        password = self._unicode_to_bytes(password)
+        prefix = self._unicode_to_bytes(prefix)
+
+        if self._handle_long_passwords:
+            password = hashlib.sha256(password).hexdigest()
+            password = self._unicode_to_bytes(password)
 
         salt = bcrypt.gensalt(rounds=rounds, prefix=prefix)
         return bcrypt.hashpw(password, salt)
@@ -195,16 +223,11 @@ class Bcrypt(object):
         '''
 
         # Python 3 unicode strings must be encoded as bytes before hashing.
-        if PY3 and isinstance(pw_hash, str):
-            pw_hash = bytes(pw_hash, 'utf-8')
+        pw_hash = self._unicode_to_bytes(pw_hash)
+        password = self._unicode_to_bytes(password)
 
-        if PY3 and isinstance(password, str):
-            password = bytes(password, 'utf-8')
-
-        if not PY3 and isinstance(pw_hash, unicode):
-            pw_hash = pw_hash.encode('utf-8')
-
-        if not PY3 and isinstance(password, unicode):
-            password = password.encode('utf-8')
+        if self._handle_long_passwords:
+            password = hashlib.sha256(password).hexdigest()
+            password = self._unicode_to_bytes(password)
 
         return safe_str_cmp(bcrypt.hashpw(password, pw_hash), pw_hash)
