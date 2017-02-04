@@ -155,6 +155,22 @@ class Bcrypt(object):
         self._handle_long_passwords = app.config.get(
             'BCRYPT_HANDLE_LONG_PASSWORDS', False)
 
+    def _unicode_to_bytes(self, unicode_string):
+        '''Converts a unicode string to a bytes object.
+
+        :param unicode_string: The unicode string to convert.'''
+        if PY3:
+            if isinstance(unicode_string, str):
+                bytes_object = bytes(unicode_string, 'utf-8')
+            else:
+                bytes_object = unicode_string
+        else:
+            if isinstance(unicode_string, unicode):
+                bytes_object = unicode_string.encode('utf-8')
+            else:
+                bytes_object = unicode_string
+        return bytes_object
+
     def generate_password_hash(self, password, rounds=None, prefix=None):
         '''Generates a password hash using bcrypt. Specifying `rounds`
         sets the log_rounds parameter of `bcrypt.gensalt()` which determines
@@ -181,23 +197,12 @@ class Bcrypt(object):
             prefix = self._prefix
 
         # Python 3 unicode strings must be encoded as bytes before hashing.
-        if PY3:
-            if isinstance(password, str):
-                password = bytes(password, 'utf-8')
-            if isinstance(prefix, str):
-                prefix = bytes(prefix, 'utf-8')
-        else:
-            if isinstance(password, unicode):
-                password = password.encode('utf-8')
-            if isinstance(prefix, unicode):
-                prefix = prefix.encode('utf-8')
+        password = self._unicode_to_bytes(password)
+        prefix = self._unicode_to_bytes(prefix)
 
         if self._handle_long_passwords:
             password = hashlib.sha256(password).hexdigest()
-            if PY3:
-                password = bytes(password, 'utf-8')
-            else:
-                password = password.encode('utf-8')
+            password = self._unicode_to_bytes(password)
 
         salt = bcrypt.gensalt(rounds=rounds, prefix=prefix)
         return bcrypt.hashpw(password, salt)
@@ -218,23 +223,11 @@ class Bcrypt(object):
         '''
 
         # Python 3 unicode strings must be encoded as bytes before hashing.
-        if PY3 and isinstance(pw_hash, str):
-            pw_hash = bytes(pw_hash, 'utf-8')
-
-        if PY3 and isinstance(password, str):
-            password = bytes(password, 'utf-8')
-
-        if not PY3 and isinstance(pw_hash, unicode):
-            pw_hash = pw_hash.encode('utf-8')
-
-        if not PY3 and isinstance(password, unicode):
-            password = password.encode('utf-8')
+        pw_hash = self._unicode_to_bytes(pw_hash)
+        password = self._unicode_to_bytes(password)
 
         if self._handle_long_passwords:
             password = hashlib.sha256(password).hexdigest()
-            if PY3:
-                password = bytes(password, 'utf-8')
-            else:
-                password = password.encode('utf-8')
+            password = self._unicode_to_bytes(password)
 
         return safe_str_cmp(bcrypt.hashpw(password, pw_hash), pw_hash)
