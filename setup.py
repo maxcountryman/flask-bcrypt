@@ -11,10 +11,10 @@ from setuptools import setup
 
 module_path = os.path.join(os.path.dirname(__file__), 'flask_bcrypt.py')
 with open(module_path) as module:
-     for line in module:
-          if line.startswith('__version_info__'):
-               version_line = line
-               break
+    for line in module:
+        if line.startswith('__version_info__'):
+            version_line = line
+            break
 
 __version__ = '.'.join(eval(version_line.split('__version_info__ = ')[-1]))
 
@@ -42,4 +42,3 @@ setup(
     ],
     test_suite='test_bcrypt'
 )
-
