@@ -14,6 +14,7 @@ class BasicTestCase(unittest.TestCase):
         app = flask.Flask(__name__)
         app.config['BCRYPT_LOG_ROUNDS'] = 6
         app.config['BCRYPT_HASH_IDENT'] = '2b'
+        app.config['BCRYPT_HANDLE_LONG_PASSWORDS'] = False
         self.bcrypt = Bcrypt(app)
 
     def test_is_string(self):
@@ -54,6 +55,37 @@ class BasicTestCase(unittest.TestCase):
         password = u'東京'
         h = generate_password_hash(password).decode('utf-8')
         self.assertTrue(check_password_hash(h, password))
+
+    def test_long_password(self):
+        """Test bcrypt maximum password length.
+
+        The bcrypt algorithm has a maximum password length of 72 bytes, and
+        ignores any bytes beyond that."""
+
+        # Create a password with a 72 bytes length
+        password = 'A' * 72
+        pw_hash = self.bcrypt.generate_password_hash(password)
+        # Ensure that a longer password yields the same hash
+        self.assertTrue(self.bcrypt.check_password_hash(pw_hash, 'A' * 80))
+
+
+class LongPasswordsTestCase(BasicTestCase):
+
+    def setUp(self):
+        app = flask.Flask(__name__)
+        app.config['BCRYPT_LOG_ROUNDS'] = 6
+        app.config['BCRYPT_HASH_IDENT'] = '2b'
+        app.config['BCRYPT_HANDLE_LONG_PASSWORDS'] = True
+        self.bcrypt = Bcrypt(app)
+
+    def test_long_password(self):
+        """Test the work around bcrypt maximum password length."""
+
+        # Create a password with a 72 bytes length
+        password = 'A' * 72
+        pw_hash = self.bcrypt.generate_password_hash(password)
+        # Ensure that a longer password **do not** yield the same hash
+        self.assertFalse(self.bcrypt.check_password_hash(pw_hash, 'A' * 80))
 
 
 if __name__ == '__main__':
