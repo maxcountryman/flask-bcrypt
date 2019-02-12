@@ -2,7 +2,7 @@
     flaskext.bcrypt
     ---------------
     
-    A Flask extension providing bcrypt hasing and comparison facilities.
+    A Flask extension providing bcrypt hashing and comparison facilities.
     
     :copyright: (c) 2011 by Max Countryman.
     :license: BSD, see LICENSE for more details.

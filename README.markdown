@@ -18,7 +18,7 @@ Install the extension with one of the following commands:
 
     $ easy_install flask-bcrypt
 
-of alternatively if you have pip installed:
+or alternatively if you have pip installed:
     
     $ pip install flask-bcrypt
 
