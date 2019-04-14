@@ -58,7 +58,7 @@ def check_password_hash(pw_hash, password):
     configuration variable provided when passing back the app object. In other 
     words this shortcut does not make use of the app object at all.
 
-    To use this function, simple import it from the module and use it in a 
+    To use this function, simply import it from the module and use it in a 
     similar fashion as the original method would be used. Here is a quick
     example::
 
