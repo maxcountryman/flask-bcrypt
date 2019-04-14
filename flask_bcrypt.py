@@ -1,9 +1,9 @@
 '''
     flaskext.bcrypt
     ---------------
-    
+
     A Flask extension providing bcrypt hashing and comparison facilities.
-    
+
     :copyright: (c) 2011 by Max Countryman.
     :license: BSD, see LICENSE for more details.
 '''
@@ -39,8 +39,9 @@ def generate_password_hash(password, rounds=None):
     configuration variable provided when passing back the app object. In other 
     words this shortcut does not make use of the app object at all.
 
-    To this this function, simple import it from the module and use it in a 
-    similar fashion as the method would be used. Here is a quick example::
+    To use this function, simply import it from the module and use it in a 
+    similar fashion as the original method would be used. Here is a quick
+    example::
 
         from flask_bcrypt import generate_password_hash
         pw_hash = generate_password_hash('hunter2', 10)
@@ -56,13 +57,14 @@ def check_password_hash(pw_hash, password):
     is intended to be used as a helper function at the expense of the 
     configuration variable provided when passing back the app object. In other 
     words this shortcut does not make use of the app object at all.
-    
-    To this this function, simple import it from the module and use it in a 
-    similar fashion as the method would be used. Here is a quick example::
-        
+
+    To use this function, simple import it from the module and use it in a 
+    similar fashion as the original method would be used. Here is a quick
+    example::
+
         from flask_bcrypt import check_password_hash
         check_password_hash(pw_hash, 'hunter2') # returns True
-    
+
     :param pw_hash: The hash to be compared against.
     :param password: The password to compare.
     '''
