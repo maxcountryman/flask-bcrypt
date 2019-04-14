@@ -1,6 +1,6 @@
 .*
 *.pyc
-*.egg-info
+*.eggi*
 *.orig
 **/_build/*
 bin/*
@@ -10,4 +10,4 @@ include/*
 lib/*
 src/*
 !.gitignore
-
+venv*
