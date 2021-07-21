@@ -18,7 +18,7 @@ __license__ = 'BSD'
 __copyright__ = '(c) 2011 by Max Countryman'
 __all__ = ['Bcrypt', 'check_password_hash', 'generate_password_hash']
 
-from werkzeug.security import safe_str_cmp
+import hmac
 
 try:
     import bcrypt
@@ -232,4 +232,4 @@ class Bcrypt(object):
             password = hashlib.sha256(password).hexdigest()
             password = self._unicode_to_bytes(password)
 
-        return safe_str_cmp(bcrypt.hashpw(password, pw_hash), pw_hash)
+        return hmac.compare_digest(bcrypt.hashpw(password, pw_hash), pw_hash)
