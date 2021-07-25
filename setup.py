@@ -1,20 +1,13 @@
-'''
-    Flask-Bcrypt
-    ------------
-
-    Bcrypt hashing for your Flask.
-'''
-
 import os
 
 from setuptools import setup
 
-module_path = os.path.join(os.path.dirname(__file__), 'flask_bcrypt.py')
-with open(module_path) as module:
-    for line in module:
-        if line.startswith('__version_info__'):
-            version_line = line
-            break
+this_directory = os.path.dirname(__file__)
+module_path = os.path.join(this_directory, 'flask_bcrypt.py')
+version_line = [line for line in open(module_path)
+                if line.startswith('__version_info__')][0]
+with open(os.path.join(this_directory, 'README.markdown')) as f:
+    long_description = f.read()
 
 __version__ = '.'.join(eval(version_line.split('__version_info__ = ')[-1]))
 
@@ -26,7 +19,8 @@ setup(
     author='Max Countryman',
     author_email='maxc@me.com',
     description='Brcrypt hashing for Flask.',
-    long_description=__doc__,
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     py_modules=['flask_bcrypt'],
     zip_safe=False,
     platforms='any',
