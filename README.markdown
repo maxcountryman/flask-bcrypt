@@ -3,7 +3,7 @@
 Flask-Bcrypt is a Flask extension that provides bcrypt hashing utilities for
 your application.
 
-Due to the recent increased prevelance of powerful hardware, such as modern
+Due to the recent increased prevalence of powerful hardware, such as modern
 GPUs, hashes have become increasingly easy to crack. A proactive solution to
 this is to use a hash that was designed to be "de-optimized". Bcrypt is such
 a hashing facility; unlike hashing algorithms such as MD5 and SHA1, which are
