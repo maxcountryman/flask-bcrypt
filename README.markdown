@@ -19,17 +19,17 @@ Install the extension with one of the following commands:
     $ easy_install flask-bcrypt
 
 or alternatively if you have pip installed:
-    
+
     $ pip install flask-bcrypt
 
 ## Usage
 
 To use the extension simply import the class wrapper and pass the Flask app
 object back to here. Do so like this:
-    
+
     from flask import Flask
     from flask_bcrypt import Bcrypt
-    
+
     app = Flask(__name__)
     bcrypt = Bcrypt(app)
 
@@ -41,4 +41,4 @@ them like so:
 
 ## Documentation
 
-The Sphinx-compiled documentation is available here: http://packages.python.org/Flask-Bcrypt/
+The Sphinx-compiled documentation is available here: https://flask-bcrypt.readthedocs.io/
