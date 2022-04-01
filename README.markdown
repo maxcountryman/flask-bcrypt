@@ -1,3 +1,7 @@
+[![Tests](https://img.shields.io/github/workflow/status/maxcountryman/flask-bcrypt/Tests/master?label=tests)](https://github.com/maxcountryman/flask-bcrypt/actions)
+[![Version](https://img.shields.io/pypi/v/Flask-Bcrypt.svg)](https://pypi.python.org/pypi/Flask-Bcrypt)
+[![Supported Python Versions](https://img.shields.io/pypi/pyversions/Flask-Bcrypt.svg)](https://pypi.python.org/pypi/Flask-Bcrypt)
+
 # Flask-Bcrypt
 
 Flask-Bcrypt is a Flask extension that provides bcrypt hashing utilities for
