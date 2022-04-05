@@ -1,0 +1,2 @@
+Sphinx>=4
+Pallets-Sphinx-Themes
