@@ -65,12 +65,12 @@ class BasicTestCase(unittest.TestCase):
         self.assertTrue(self.bcrypt.check_password_hash(pw_hash, 'A' * 80))
 
     def test_custom_long_password(self):
-        """Test the work around bcrypt maximum password length when set explicitly."""
+        """Test the work around bcrypt maximum password length when set explicitly to True."""
 
         # Create a password with a 72 bytes length
         password = 'A' * 72
         pw_hash = self.bcrypt.generate_password_hash(password, handle_long_passwords=True)
-        # Ensure that a longer password yields the same hash
+        # Ensure that a longer password *does not* yield the same hash
         self.assertFalse(self.bcrypt.check_password_hash(pw_hash, 'A' * 80, handle_long_passwords=True))
 
 
@@ -89,11 +89,11 @@ class LongPasswordsTestCase(BasicTestCase):
         # Create a password with a 72 bytes length
         password = 'A' * 72
         pw_hash = self.bcrypt.generate_password_hash(password)
-        # Ensure that a longer password **do not** yield the same hash
+        # Ensure that a longer password **does not** yield the same hash
         self.assertFalse(self.bcrypt.check_password_hash(pw_hash, 'A' * 80))
 
     def test_custom_long_password(self):
-        """Test the work around bcrypt maximum password length when set explicitly."""
+        """Test the work around bcrypt maximum password length when set explicitly to False."""
 
         # Create a password with a 72 bytes length
         password = 'A' * 72
