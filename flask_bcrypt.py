@@ -163,7 +163,7 @@ class Bcrypt(object):
             bytes_object = unicode_string
         return bytes_object
 
-    def generate_password_hash(self, password, rounds=None, prefix=None):
+    def generate_password_hash(self, password, rounds=None, prefix=None, handle_long_passwords=None):
         '''Generates a password hash using bcrypt. Specifying `rounds`
         sets the log_rounds parameter of `bcrypt.gensalt()` which determines
         the complexity of the salt. 12 is the default value. Specifying `prefix`
@@ -178,6 +178,7 @@ class Bcrypt(object):
         :param password: The password to be hashed.
         :param rounds: The optional number of rounds.
         :param prefix: The algorithm version to use.
+        :param handle_long_passwords: Enable prehashing with SHA256
         '''
 
         if not password:
@@ -192,14 +193,17 @@ class Bcrypt(object):
         password = self._unicode_to_bytes(password)
         prefix = self._unicode_to_bytes(prefix)
 
-        if self._handle_long_passwords:
+        if handle_long_passwords is None:
+            handle_long_passwords = self._handle_long_passwords
+
+        if handle_long_passwords:
             password = hashlib.sha256(password).hexdigest()
             password = self._unicode_to_bytes(password)
 
         salt = bcrypt.gensalt(rounds=rounds, prefix=prefix)
         return bcrypt.hashpw(password, salt)
 
-    def check_password_hash(self, pw_hash, password):
+    def check_password_hash(self, pw_hash, password, handle_long_passwords=None):
         '''Tests a password hash against a candidate password. The candidate
         password is first hashed and then subsequently compared in constant
         time to the existing hash. This will either return `True` or `False`.
@@ -212,13 +216,17 @@ class Bcrypt(object):
 
         :param pw_hash: The hash to be compared against.
         :param password: The password to compare.
+        :param handle_long_passwords: Enable prehashing with SHA256
         '''
 
         # Python 3 unicode strings must be encoded as bytes before hashing.
         pw_hash = self._unicode_to_bytes(pw_hash)
         password = self._unicode_to_bytes(password)
 
-        if self._handle_long_passwords:
+        if handle_long_passwords is None:
+            handle_long_passwords = self._handle_long_passwords
+
+        if handle_long_passwords:
             password = hashlib.sha256(password).hexdigest()
             password = self._unicode_to_bytes(password)
 
