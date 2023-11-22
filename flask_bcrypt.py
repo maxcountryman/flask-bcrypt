@@ -221,5 +221,5 @@ class Bcrypt(object):
         if self._handle_long_passwords:
             password = hashlib.sha256(password).hexdigest()
             password = self._unicode_to_bytes(password)
-
-        return hmac.compare_digest(bcrypt.hashpw(password, pw_hash), pw_hash)
+        
+        return bcrypt.checkpw(password, pw_hash)
