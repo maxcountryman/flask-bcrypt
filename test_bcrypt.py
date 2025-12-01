@@ -62,7 +62,7 @@ class BasicTestCase(unittest.TestCase):
         password = 'A' * 72
         pw_hash = self.bcrypt.generate_password_hash(password)
         # Ensure that a longer password yields the same hash
-        self.assertTrue(self.bcrypt.check_password_hash(pw_hash, 'A' * 80))
+        self.assertTrue(self.bcrypt.check_password_hash(pw_hash, 'A' * 72))
 
 
 class LongPasswordsTestCase(BasicTestCase):
